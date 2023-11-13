@@ -7,15 +7,15 @@ public class CheckpointManager : MonoBehaviour
 {
     public float MaxTimeToReachNextCheckpoint = 30f;
     public float TimeLeft = 30f;
-    
+
     public KartAgent kartAgent;
     public Checkpoint nextCheckPointToReach;
-    
+
     private int CurrentCheckpointIndex;
     private List<Checkpoint> Checkpoints;
     private Checkpoint lastCheckpoint;
 
-    public event Action<Checkpoint> reachedCheckpoint; 
+    public event Action<Checkpoint> reachedCheckpoint;
 
     void Start()
     {
@@ -27,7 +27,7 @@ public class CheckpointManager : MonoBehaviour
     {
         CurrentCheckpointIndex = 0;
         TimeLeft = MaxTimeToReachNextCheckpoint;
-        
+
         SetNextCheckpoint();
     }
 
@@ -44,8 +44,9 @@ public class CheckpointManager : MonoBehaviour
 
     public void CheckPointReached(Checkpoint checkpoint)
     {
-        if (nextCheckPointToReach != checkpoint) return;
-        
+        if (nextCheckPointToReach != checkpoint)
+            return;
+
         lastCheckpoint = Checkpoints[CurrentCheckpointIndex];
         reachedCheckpoint?.Invoke(checkpoint);
         CurrentCheckpointIndex++;
@@ -53,7 +54,7 @@ public class CheckpointManager : MonoBehaviour
         if (CurrentCheckpointIndex >= Checkpoints.Count)
         {
             kartAgent.AddReward(0.5f);
-            kartAgent.EndEpisode();
+            kartAgent.EndEpisode(); // TODO: Uncoment when training
         }
         else
         {
@@ -68,7 +69,6 @@ public class CheckpointManager : MonoBehaviour
         {
             TimeLeft = MaxTimeToReachNextCheckpoint;
             nextCheckPointToReach = Checkpoints[CurrentCheckpointIndex];
-            
         }
     }
 }
