@@ -1,5 +1,9 @@
 # AI Racing Karts
 
+This is a fork of the main branch of the following repository by Sebastian Schuchmann: https://github.com/Sebastian-Schuchmann/AI-Racing-Karts
+
+I followed his tutorial to train the agents and added some polish to the visuals.
+
 ### An ML-Agents Tutorial
 
 ![](./Thumbnail.jpg)
