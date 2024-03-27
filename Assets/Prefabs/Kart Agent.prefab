@@ -234,6 +234,7 @@ MonoBehaviour:
   TimeLeft: 45
   kartAgent: {fileID: 3137537921882263140}
   nextCheckPointToReach: {fileID: 0}
+  _kartController: {fileID: 2325970314234930323}
 --- !u!1 &3137537921143488006
 GameObject:
   m_ObjectHideFlags: 0
@@ -1130,6 +1131,7 @@ MonoBehaviour:
   frontWheels: {fileID: 3137537921143488001}
   backWheels: {fileID: 3137537921864692967}
   steeringWheel: {fileID: 3137537921393488640}
+  _respawnSeconds: 10
 --- !u!114 &3137537921882263140
 MonoBehaviour:
   m_ObjectHideFlags: 0

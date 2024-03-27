@@ -5,6 +5,8 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.Rendering.PostProcessing;
 using Cinemachine;
+using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 public class KartController : MonoBehaviour
 {
@@ -28,9 +30,15 @@ public class KartController : MonoBehaviour
    public Transform backWheels;
    public Transform steeringWheel;
 
+   [SerializeField] private float _reloadSeconds = 10f;
+   [SerializeField] private bool _isCameraKart = false;
+
+   private float _reloadTimer;
+   
    public void Awake()
    {
       _spawnPointManager = FindObjectOfType<SpawnPointManager>();
+      _reloadTimer = _reloadSeconds;
    }
 
    public void ApplyAcceleration(float input)
@@ -55,13 +63,20 @@ public class KartController : MonoBehaviour
    
    public void Respawn()
    {
+      ResetReloadTimer();
       Vector3 pos = _spawnPointManager.SelectRandomSpawnpoint();
       sphere.MovePosition(pos);
       transform.position = pos - new Vector3(0, 0.4f, 0);
    }
+
+   public void ResetReloadTimer()
+   {
+      _reloadTimer = _reloadSeconds;
+   }
    
    public void FixedUpdate()
    {
+      CheckReloadTimer();
       sphere.AddForce(-kartModel.transform.right * currentSpeed, ForceMode.Acceleration);
 
       //Gravity
@@ -80,7 +95,21 @@ public class KartController : MonoBehaviour
       kartNormal.up = Vector3.Lerp(kartNormal.up, hitNear.normal, Time.deltaTime * 8.0f);
       kartNormal.Rotate(0, transform.eulerAngles.y, 0);
    }
-   
+
+   private void CheckReloadTimer()
+   {
+      if (!_isCameraKart)
+         return;
+      
+      Debug.Log($"Reload Timer: {_reloadTimer}");
+      
+      _reloadTimer -= Time.fixedDeltaTime;
+      if (_reloadTimer <= 0)
+      {
+         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+      }
+   }
+
    public void Steer(float steeringSignal)
    {
       int steerDirection = steeringSignal > 0 ? 1 : -1;

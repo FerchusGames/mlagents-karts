@@ -10,7 +10,9 @@ public class CheckpointManager : MonoBehaviour
 
     public KartAgent kartAgent;
     public Checkpoint nextCheckPointToReach;
-
+    
+    [SerializeField] private KartController _kartController;
+    
     private int CurrentCheckpointIndex;
     private List<Checkpoint> Checkpoints;
     private Checkpoint lastCheckpoint;
@@ -47,6 +49,8 @@ public class CheckpointManager : MonoBehaviour
         if (nextCheckPointToReach != checkpoint)
             return;
 
+        _kartController.ResetReloadTimer();
+        
         lastCheckpoint = Checkpoints[CurrentCheckpointIndex];
         reachedCheckpoint?.Invoke(checkpoint);
         CurrentCheckpointIndex++;
